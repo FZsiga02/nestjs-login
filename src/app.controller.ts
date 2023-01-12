@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Render,
+  Session,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import db from './db';
@@ -13,7 +14,14 @@ export class AppController {
 
   @Get()
   @Render('index')
-  index() {
-    return { message: 'Welcome to the homepage' };
+  index(@Session() session: Record<string, any> ) {
+    let userName = '';
+    if (session.user_id) {
+      //...
+    } else {
+      userName = 'Guest';
+    }
+
+    return { message: 'Welcome to the homepage, ' + userName };
   }
 }
