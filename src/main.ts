@@ -1,7 +1,10 @@
+/* eslint-disable prettier/prettier */
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import session from 'express-session';
 import { join } from 'path';
 import { AppModule } from './app.module';
+
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -10,6 +13,12 @@ async function bootstrap() {
      alongside with src. You can put them wherever you want, 
      just use the correct path if you use another folder.
   */
+  app.use(session({
+    secret: 'my-secret',
+    resave: false,
+    saveUninitialized: false,
+  }),
+  )
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('ejs');
